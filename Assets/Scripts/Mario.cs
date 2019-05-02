@@ -31,11 +31,7 @@ public class Mario : MonoBehaviour
     private SpriteRenderer sr;
     private Rigidbody2D rgBody2D;
     private Animator animator;
-
-    //// 提升至最高速度用时
-    //private float amountTime = 4;
-    //// 已用时间
-    //private float moveTime = 0;
+    
     private float startTime = 0;
     private float twoPi = Mathf.PI * 2;
 
@@ -65,59 +61,19 @@ public class Mario : MonoBehaviour
         {
             rgBody2D.gravityScale = 1;
             float direction = h / Mathf.Abs(h);
-            //if(velocity_x<0.1||velocity_x > -0.1)
-            //{
-            //    velocity_x = direction * 1.5f;
-            //}
-            //velocity_x = velocity_x + Mathf.Clamp(h + 0.15f * h / Mathf.Abs(h)*Time.deltaTime, -0.5f, 0.5f);
-            //velocity_x = velocity_x + 0.2f * h / Mathf.Abs(h);
-            //velocity_x = velocity_x + Mathf.Clamp(0.2f / h, -0.5f, 0.5f);
-            //velocity_x = velocity_x + 15 * Mathf.Clamp(100f / h, -1f, 1f) * Time.deltaTime;
-            //velocity_x = velocity_x + 1f / h;
-            //velocity_x = velocity_x + direction * 3 * maxHorizontalSpeed / 2 * Time.deltaTime;
-            //velocity_x = h * maxHorizontalSpeed;
             if (velocity_x == 0)
             {
-                velocity_x = 0.7f * direction;
+                velocity_x = 1f * direction;
             }
             else
             {
-                velocity_x += 0.15f * direction;
+                velocity_x += 0.2f * direction;
             }
         }
         else
         {
             rgBody2D.gravityScale = 15;
         }
-
-        //if (h > 0)
-        //{
-        //    rgBody2D.gravityScale = 1;
-        //    if (velocity_x == 0)
-        //    {
-        //        velocity_x = 0.7f;
-        //    }
-        //    else
-        //    {
-        //        velocity_x += 0.15f;
-        //    }
-        //}
-        //else if (h < 0)
-        //{
-        //    rgBody2D.gravityScale = 1;
-        //    if (velocity_x == 0)
-        //    {
-        //        velocity_x = -0.7f;
-        //    }
-        //    else
-        //    {
-        //        velocity_x -= 0.15f;
-        //    }
-        //}
-        //else
-        //{
-        //    rgBody2D.gravityScale = 15;
-        //}
         velocity_x = Mathf.Clamp(velocity_x, -maxHorizontalSpeed, maxHorizontalSpeed);
         rgBody2D.velocity = Vector2.right * velocity_x + Vector2.up * rgBody2D.velocity;
         if (inGround)
@@ -169,15 +125,15 @@ public class Mario : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        ContactPoint2D[] contacts = collision.contacts;
-        for (int i = 0; i < contacts.Length; i++)
-        {
-            if (!inGround && contacts[i].normal.y < 0)
-            {
-                ChangeToFalling();
-                rgBody2D.velocity = Vector2.zero;
-            }
-        }
+        //ContactPoint2D[] contacts = collision.contacts;
+        //for (int i = 0; i < contacts.Length; i++)
+        //{
+        //    if (!inGround && contacts[i].normal.y < 0)
+        //    {
+        //        ChangeToFalling();
+        //        rgBody2D.velocity = Vector2.zero;
+        //    }
+        //}
     }
 
     public void ChangeToRising()
