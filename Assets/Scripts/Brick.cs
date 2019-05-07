@@ -19,9 +19,10 @@ public class Brick : Brock
         {
             InstantiateBrokeBrick();
         }
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
+    // 生成四个小碎块
     private void InstantiateBrokeBrick()
     {
         GameObject instance_0 = Instantiate(brokeBrickPrefab, transform.position - Vector3.right * 0.25f + Vector3.up * 0.25f, Quaternion.identity);
@@ -53,7 +54,14 @@ public class Brick : Brock
             }
             else
             {
-                Break();
+                ContactPoint2D[] contacts = collision.contacts;
+                for(int i = 0; i < contacts.Length; i++)
+                {
+                    if (contacts[i].normal.y > 0)
+                    {
+                        Break();
+                    }
+                }
             }
         }
     }
