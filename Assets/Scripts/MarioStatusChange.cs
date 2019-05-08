@@ -47,6 +47,7 @@ public class MarioStatusChange : MonoBehaviour
         {
             currentSpriteIdx = (currentSpriteIdx + 1) % twinklingSprites.Length;
             sr.sprite = twinklingSprites[currentSpriteIdx];
+            lastTwinkling = Time.unscaledTime;
         }
 
         if(Time.unscaledTime - changeStartTime >= changeUseTime)

@@ -21,6 +21,8 @@ public class Mario : MonoBehaviour
 
     public RuntimeAnimatorController[] controllers;
 
+    public float ghostTime = 2f;
+
     private Rigidbody2D rgBody2D;
     private Collider2D coll2D;
     private Animator animator;
@@ -31,10 +33,12 @@ public class Mario : MonoBehaviour
     private float inputTime = 0;
     private bool onGround = false;
     private Vector2 velocity = Vector2.zero;
+    private bool isAlive = true;
     // 无敌(吃了星星之后的无敌,自身带有攻击判断)
     private bool isInvincible = false;
     // 受伤后免疫伤害状态
     private bool isGhost = false;
+    private int layer_Enemy;
 
     // Start is called before the first frame update
     void Start()
@@ -46,12 +50,14 @@ public class Mario : MonoBehaviour
 
         detalSpeedX = maxSpeedX - startSpeedX;
         stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
+
+        layer_Enemy = LayerMask.NameToLayer("Enemy");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale == 0)
+        if (Time.timeScale == 0 || !isAlive)
         {
             return;
         }
@@ -59,15 +65,17 @@ public class Mario : MonoBehaviour
         onGround = rgBody2D.velocity.y == 0;
         velocity = rgBody2D.velocity;
         // 获取当前朝向 (-1/1)
-        float currentDirection = (transform.rotation.eulerAngles.y - 90) / -90;
+        //float currentDirection = (transform.rotation.eulerAngles.y - 90) / -90;
+        float currentDirection = transform.right.x;
         float h = Input.GetAxis("Horizontal");
         // 有水平输入
         if (h != 0)
         {
             // 获取水平输入方向 (-1/1)
             float inputDirection = h / Mathf.Abs(h);
+            bool isSameDirection = inputDirection == currentDirection;
             // 转向/重新起步时重置inputTime
-            if (inputDirection != currentDirection || velocity.x == 0)
+            if (!isSameDirection || velocity.x == 0)
             {
                 inputTime = 0;
             }
@@ -75,10 +83,11 @@ public class Mario : MonoBehaviour
             inputTime = Mathf.Min(inputTime + Time.deltaTime, inputDirection * velocity.x < 0 ? stopUseTime : maxSpeedUseTime);
 
             // 在地面
-            if (onGround)
+            if (onGround && !isSameDirection)
             {
                 // 改变朝向
-                transform.rotation = Quaternion.Euler(0, 90 - 90 * inputDirection, 0);
+                //transform.rotation = Quaternion.Euler(0, 90 - 90 * inputDirection, 0);
+                transform.right *= -1;
             }
             // 提速
             if (inputDirection * velocity.x >= 0)
@@ -119,6 +128,65 @@ public class Mario : MonoBehaviour
         TestInput();
 
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        int colliderLayerMask = collision.gameObject.layer;
+        ContactPoint2D[] contacts = collision.contacts;
+        if(colliderLayerMask == layer_Enemy)
+        {
+            for(int i = 0; i < contacts.Length; i++)
+            {
+                Vector2 hitNormal = contacts[i].normal;
+                if (hitNormal.x != 0 || hitNormal.y < 0)
+                {
+                    CollideWithEnemy();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void CollideWithEnemy()
+    {
+        // 原始状态
+        if(status == Status.NormalSmall)
+        {
+            Die();
+        }
+        else
+        {
+            OnGhost();
+            StatusChangeTo(Status.NormalSmall);
+            Invoke("OffGhost", ghostTime);
+        }
+    }
+
+    private void Die()
+    {
+        isAlive = false;
+        rgBody2D.velocity = Vector2.zero;
+        animator.SetBool("isAlive", isAlive);
+        Invoke("OnDieJump", 1f);
+    }
+
+    private void OnDieJump()
+    {
+        rgBody2D.AddForce(Vector2.up * 15, ForceMode2D.Impulse);
+        coll2D.enabled = false;
+    }
+
+    private void OnGhost()
+    {
+        isGhost = true;
+        Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, true);
+    }
+
+    private void OffGhost()
+    {
+        isGhost = false;
+        Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, false);
     }
 
     private void StatusChangeTo(Status newStatus)
