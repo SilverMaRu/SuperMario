@@ -16,6 +16,7 @@ public class Chestnut : Enemy
     protected override void StepedOn()
     {
         base.StepedOn();
+        rgBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
         Die();
     }
 }

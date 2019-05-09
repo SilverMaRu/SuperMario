@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
 
         if (colliderLayerMask == layer_PlayerBullet)
         {
-            OnHit();
+            OnHit(contacts[0].point);
         }
         else if (colliderLayerMask == layer_Ground)
         {
@@ -77,15 +77,23 @@ public class Enemy : MonoBehaviour
         rgBody2D.velocity = Vector2.zero;
     }
 
-    protected virtual void OnHit()
+    protected virtual void OnHit(Vector3 hitPoint)
     {
+        if(hitPoint.x > transform.position.x)
+        {
+            rgBody2D.velocity = Vector2.left * 5 + Vector2.up * 20;
+
+        }
+        else
+        {
+            rgBody2D.velocity = Vector2.right * 5 + Vector2.up * 20;
+        }
         animator.SetTrigger("onHit");
-        rgBody2D.velocity = Vector2.right * 2 + Vector2.up * 10;
+        Die();
     }
 
     protected virtual void Die()
     {
-        rgBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
         for(int i = 0; i < childrenscoll2D.Length; i++)
         {
             childrenscoll2D[i].enabled = false;

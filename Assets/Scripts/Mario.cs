@@ -11,6 +11,11 @@ public class Mario : MonoBehaviour
         NormalBig = 10,
         FireBig = 11
     }
+    public static int bulletNum = 0;
+
+    public KeyCode jumpKey = KeyCode.K;
+    public KeyCode shootKey = KeyCode.J;
+
     public Status status = Status.NormalSmall;
 
     public float startSpeedX = 1.5f;
@@ -23,6 +28,10 @@ public class Mario : MonoBehaviour
 
     public float ghostTime = 2f;
 
+    public Transform shootPointTrans;
+    public float shootFrequency = 0.5f;
+    public int maxBulletAliveNum = 2;
+
     private Rigidbody2D rgBody2D;
     private Collider2D coll2D;
     private Animator animator;
@@ -32,13 +41,20 @@ public class Mario : MonoBehaviour
     private float stopTimeXMaxSpeed = 0;
     private float inputTime = 0;
     private bool onGround = false;
+    // 记录是否按下过跳跃按键
+    private bool hadJumpKeyDown = false;
+    // 记录是否释放过跳跃按键
+    private bool hadJumpKeyUp = false;
     private Vector2 velocity = Vector2.zero;
     private bool isAlive = true;
     // 无敌(吃了星星之后的无敌,自身带有攻击判断)
     private bool isInvincible = false;
     // 受伤后免疫伤害状态
     private bool isGhost = false;
+    private float lastShootTime = 0;
+
     private int layer_Enemy;
+    private GameObject bulletFirePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +68,7 @@ public class Mario : MonoBehaviour
         stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
 
         layer_Enemy = LayerMask.NameToLayer("Enemy");
+        bulletFirePrefab = Resources.Load<GameObject>("Prefabs/Fire");
     }
 
     // Update is called once per frame
@@ -64,10 +81,28 @@ public class Mario : MonoBehaviour
         // 通过垂直方向速度判断是否在地面
         onGround = rgBody2D.velocity.y == 0;
         velocity = rgBody2D.velocity;
+        float h = Input.GetAxis("Horizontal");
+        Move(h);
+        Jump();
+        Shoot();
+
+        // 再次判断是否在地面
+        onGround = rgBody2D.velocity.y == 0;
+        animator.SetFloat("speed_x", rgBody2D.velocity.x);
+        animator.SetFloat("force_x", h);
+        animator.SetBool("inGround", onGround);
+        animator.SetBool("isGhost", isGhost);
+
+        TestInput();
+
+
+    }
+
+    private void Move(float h)
+    {
         // 获取当前朝向 (-1/1)
         //float currentDirection = (transform.rotation.eulerAngles.y - 90) / -90;
         float currentDirection = transform.right.x;
-        float h = Input.GetAxis("Horizontal");
         // 有水平输入
         if (h != 0)
         {
@@ -108,26 +143,41 @@ public class Mario : MonoBehaviour
             }
         }
         rgBody2D.velocity = velocity;
-        
-        if (onGround && Input.GetKeyDown(KeyCode.Space))
+    }
+
+    private void Jump()
+    {
+        if (onGround && Input.GetKeyDown(jumpKey))
         {
             rgBody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            hadJumpKeyDown = true;
+            hadJumpKeyUp = false;
         }
-        
-        if (!onGround && Input.GetKeyUp(KeyCode.Space))
+
+        if (!onGround && hadJumpKeyDown && !hadJumpKeyUp && Input.GetKeyUp(jumpKey))
         {
             rgBody2D.velocity = Vector2.right * rgBody2D.velocity.x + Vector2.up * rgBody2D.velocity.y * 0.25f;
+            hadJumpKeyUp = true;
+            hadJumpKeyDown = false;
         }
+    }
 
-        // 再次判断是否在地面
-        onGround = rgBody2D.velocity.y == 0;
-        animator.SetFloat("speed_x", rgBody2D.velocity.x);
-        animator.SetFloat("force_x", h);
-        animator.SetBool("inGround", onGround);
-
-        TestInput();
-
-
+    private void Shoot()
+    {
+        if (status != Status.FireBig)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(shootKey) && bulletNum < maxBulletAliveNum && Time.time - lastShootTime> shootFrequency)
+        {
+            animator.SetTrigger("shoot");
+            if(bulletFirePrefab != null && shootPointTrans != null)
+            {
+                Instantiate(bulletFirePrefab, shootPointTrans.position, shootPointTrans.rotation);
+                bulletNum++;
+            }
+            lastShootTime = Time.time;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

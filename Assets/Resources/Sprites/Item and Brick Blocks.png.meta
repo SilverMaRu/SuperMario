@@ -2,9 +2,9 @@ fileFormatVersion: 2
 guid: 8ebc53d91e73a8a4d8b560b1044e342d
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Coin_0
-    21300002: Coin_1
-    21300004: Coin_2
+    21300000: Treasure_0
+    21300002: Treasure_1
+    21300004: Treasure_2
     21300006: Coin_3
     21300008: Brick_0
     21300010: BrokeBrick_0
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Coin_0
+      name: Treasure_0
       rect:
         serializedVersion: 2
         x: 80
@@ -146,7 +146,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Coin_1
+      name: Treasure_1
       rect:
         serializedVersion: 2
         x: 96
@@ -166,7 +166,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Coin_2
+      name: Treasure_2
       rect:
         serializedVersion: 2
         x: 112

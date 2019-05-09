@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : Brock
+public class Treasure : Brock
 {
     public int maxHitNum = 1;
     private int currentHitNum = 0;
