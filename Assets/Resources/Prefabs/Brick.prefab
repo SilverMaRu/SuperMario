@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984b6f78d6653a44e8a2feba92113478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 0
+  itemNum: 1
   brokeBrickPrefabPath: Prefabs/BrokeBrick
 --- !u!212 &6754367176078176595
 SpriteRenderer:
@@ -105,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 6754367176078176598}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 38c42b1f130ff3d49bf0592d579d13d2, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2d85c71fc20ab424eb4b4c8fef6f76fd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

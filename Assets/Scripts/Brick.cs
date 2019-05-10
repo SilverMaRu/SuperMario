@@ -48,7 +48,7 @@ public class Brick : Brock
         Mario mario = collision.gameObject.GetComponent<Mario>();
         if(mario != null)
         {
-            if((int)mario.status < 10)
+            if((int)mario.status < (int)Mario.Status.NormalBig)
             {
                 base.OnCollisionEnter2D(collision);
             }

@@ -9,10 +9,10 @@ public class CameraControl : MonoBehaviour
     public float moveCenterUseTime = 2f;
 
     private Transform targetTrans;
-    private Rigidbody2D targetRgBody2D;
     // 摄像机恒定的位置向量
     private Vector3 stableVector;
     private float moveCenterVelocityX = 0;
+    private float lastPositionX = 0;
 
     private float totalTime = 0;
 
@@ -20,7 +20,6 @@ public class CameraControl : MonoBehaviour
     void Start()
     {
         targetTrans = target.transform;
-        targetRgBody2D = target.GetComponent<Rigidbody2D>();
 
         stableVector = Vector3.Scale(transform.position, Vector3.up + Vector3.forward);
         moveCenterVelocityX = startMoveOffsetX / moveCenterUseTime;
@@ -31,21 +30,25 @@ public class CameraControl : MonoBehaviour
     {
         float currentDistance = transform.position.x - targetTrans.position.x;
         float newPositionX = 0;
-        float targetCurrentSpeedX = targetRgBody2D.velocity.x;
+        float targetDeltaPositionX = targetTrans.position.x - lastPositionX;
         if (currentDistance <= 0)
         {
             TotalTime(moveCenterUseTime);
             newPositionX = targetTrans.position.x;
             transform.position = Vector3.right * newPositionX + stableVector;
         }
-        else if (currentDistance <= startMoveOffsetX && targetCurrentSpeedX > 0)
+        else if (currentDistance <= startMoveOffsetX && targetDeltaPositionX > 0)
         {
-            TotalTime(Time.deltaTime);
-            float normalTotalTime = totalTime / moveCenterUseTime;
+            float normalTotalTime = Mathf.Min(totalTime / moveCenterUseTime, 1);
             newPositionX = targetTrans.position.x + startMoveOffsetX * (1 - normalTotalTime);
-            transform.position = Vector3.right * newPositionX + stableVector;
+            if(newPositionX> transform.position.x)
+            {
+                transform.position = Vector3.right * newPositionX + stableVector;
+                TotalTime(Time.deltaTime);
+            }
         }
-        else if (currentDistance <= startMoveOffsetX && targetCurrentSpeedX <= 0)
+        else if (currentDistance <= startMoveOffsetX && targetDeltaPositionX == 0) { }
+        else if (currentDistance <= startMoveOffsetX && targetDeltaPositionX < 0)
         {
             totalTime = (targetTrans.position.x + startMoveOffsetX - transform.position.x) / moveCenterVelocityX;
         }
@@ -53,6 +56,7 @@ public class CameraControl : MonoBehaviour
         {
             TotalTime(-moveCenterUseTime);
         }
+        lastPositionX = targetTrans.position.x;
     }
 
     private void TotalTime(float detalTime)

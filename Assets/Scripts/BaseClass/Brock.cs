@@ -4,13 +4,28 @@ using UnityEngine;
 
 public class Brock : MonoBehaviour
 {
+    public enum ItemType
+    {
+        None,
+        Coin,
+        GroupUpItem,
+        InvincibleStar,
+        LiveupMushroom
+    }
+    public ItemType itemType = ItemType.None;
+    public int itemNum = 1;
+    protected int currentHitNum = 0;
+
     protected Animator animator;
 
+    protected int layer_Player;
+
     // Start is called before the first frame update
-     protected virtual void Start()
+    protected virtual void Start()
     {
         InitGameObjects();
         InitComponents();
+        InitVariables();
     }
 
     protected virtual void InitGameObjects() { }
@@ -20,20 +35,32 @@ public class Brock : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    protected virtual void InitVariables()
+    {
+        layer_Player = LayerMask.NameToLayer("Player");
+    }
+
     protected virtual void OnHit()
     {
         animator.SetTrigger("hit");
+        currentHitNum++;
+        animator.SetBool("empty", currentHitNum >= itemNum && itemType != ItemType.None);
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        ContactPoint2D[] contacts = collision.contacts;
-        for(int i = 0; i < contacts.Length; i++)
+        Mario mario = collision.gameObject.GetComponent<Mario>();
+        int colliderLayer = collision.gameObject.layer;
+        if (colliderLayer == layer_Player && (currentHitNum < itemNum || itemType == ItemType.None))
         {
-            if(contacts[i].normal.y > 0)
+            ContactPoint2D[] contacts = collision.contacts;
+            for (int i = 0; i < contacts.Length; i++)
             {
-                OnHit();
-                break;
+                if (contacts[i].normal.y > 0)
+                {
+                    OnHit();
+                    break;
+                }
             }
         }
     }
