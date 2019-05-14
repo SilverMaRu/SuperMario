@@ -7,9 +7,8 @@ public class Mario : MonoBehaviour
     public enum Status
     {
         NormalSmall = 0,
-        FireSmall = 1,
-        NormalBig = 10,
-        FireBig = 11
+        NormalBig = 1,
+        FireBig = 2
     }
     public static int bulletNum = 0;
 
@@ -101,7 +100,6 @@ public class Mario : MonoBehaviour
     private void Move(float h)
     {
         // 获取当前朝向 (-1/1)
-        //float currentDirection = (transform.rotation.eulerAngles.y - 90) / -90;
         float currentDirection = transform.right.x;
         // 有水平输入
         if (h != 0)
@@ -121,7 +119,6 @@ public class Mario : MonoBehaviour
             if (onGround && !isSameDirection)
             {
                 // 改变朝向
-                //transform.rotation = Quaternion.Euler(0, 90 - 90 * inputDirection, 0);
                 transform.right *= -1;
             }
             // 提速
@@ -239,7 +236,7 @@ public class Mario : MonoBehaviour
         Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, false);
     }
 
-    private void StatusChangeTo(Status newStatus)
+    public void StatusChangeTo(Status newStatus)
     {
         statusChange.DoChange(newStatus);
         switch (newStatus)
@@ -250,13 +247,21 @@ public class Mario : MonoBehaviour
             case Status.NormalBig:
                 animator.runtimeAnimatorController = controllers[1];
                 break;
-            case Status.FireSmall:
-                break;
             case Status.FireBig:
                 animator.runtimeAnimatorController = controllers[2];
                 break;
         }
         status = newStatus;
+    }
+
+    public void OnInvincible()
+    {
+        isInvincible = true;
+    }
+
+    private void OffInvincible()
+    {
+        isInvincible = false;
     }
 
 

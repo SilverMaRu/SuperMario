@@ -23,6 +23,8 @@ TextureImporter:
     21300036: InvincibleStar_1
     21300038: InvincibleStar_2
     21300040: InvincibleStar_3
+    21300042: GoalFlag
+    21300044: CastleFlag
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -553,6 +555,46 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c259f348d42fe1745988d6daba29747e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GoalFlag
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 288
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 710d87e0f5eec054f8428b0312636cdd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CastleFlag
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 320
+        width: 14
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79eb842b1cbc0994f8ea73336f80ebc6
       vertices: []
       indices: 
       edges: []

@@ -89,9 +89,9 @@ public class MarioStatusChange : MonoBehaviour
             case Mario.Status.NormalBig:
                 resultSpriteName = "NormalMario_B" + strIndex;
                 break;
-            case Mario.Status.FireSmall:
-                resultSpriteName = "FireMario" + strIndex;
-                break;
+            //case Mario.Status.FireSmall:
+            //    resultSpriteName = "FireMario" + strIndex;
+                //break;
             case Mario.Status.FireBig:
                 resultSpriteName = "FireMario_B" + strIndex;
                 break;
