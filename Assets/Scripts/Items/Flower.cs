@@ -10,6 +10,7 @@ public class Flower : Item
     {
         base.Start();
         layer_Player = LayerMask.NameToLayer("Player");
+        _score = 1000;
     }
 
     protected override void EndRise()

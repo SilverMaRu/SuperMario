@@ -5,6 +5,12 @@ using Assets.Scripts.Others;
 
 public class Chestnut : Enemy
 {
+    protected override void Start()
+    {
+        base.Start();
+        _score = 100;
+    }
+
     protected override void Update()
     {
         if(Tool.IsOutOfCameraY(transform.position.y, 1.5f))

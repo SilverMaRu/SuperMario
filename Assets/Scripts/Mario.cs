@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Assets.Scripts.Others;
 public class Mario : MonoBehaviour
 {
     public enum Status
@@ -36,7 +36,7 @@ public class Mario : MonoBehaviour
     private Animator animator;
     private MarioStatusChange statusChange;
 
-    private float detalSpeedX = 0;
+    private float deltaSpeedX = 0;
     private float stopTimeXMaxSpeed = 0;
     private float inputTime = 0;
     private bool onGround = false;
@@ -52,7 +52,7 @@ public class Mario : MonoBehaviour
     private bool isGhost = false;
     private float lastShootTime = 0;
 
-    private int layer_Enemy;
+    //private int layer_Enemy;
     private GameObject bulletFirePrefab;
 
     // Start is called before the first frame update
@@ -63,11 +63,13 @@ public class Mario : MonoBehaviour
         animator = GetComponent<Animator>();
         statusChange = GetComponent<MarioStatusChange>();
 
-        detalSpeedX = maxSpeedX - startSpeedX;
+        deltaSpeedX = maxSpeedX - startSpeedX;
         stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
 
-        layer_Enemy = LayerMask.NameToLayer("Enemy");
+        //layer_Enemy = LayerMask.NameToLayer("Enemy");
         bulletFirePrefab = Resources.Load<GameObject>("Prefabs/Fire");
+
+        EventManager.BindingEvent<IScore>("AddScore", OnAddScore);
     }
 
     // Update is called once per frame
@@ -124,7 +126,7 @@ public class Mario : MonoBehaviour
             // 提速
             if (inputDirection * velocity.x >= 0)
             {
-                velocity.x = (startSpeedX + detalSpeedX * (inputTime / maxSpeedUseTime)) * inputDirection;
+                velocity.x = (startSpeedX + deltaSpeedX * (inputTime / maxSpeedUseTime)) * inputDirection;
             }
             else // 刹车
             {
@@ -179,11 +181,12 @@ public class Mario : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        int colliderLayerMask = collision.gameObject.layer;
+        int colliderLayer = collision.gameObject.layer;
         ContactPoint2D[] contacts = collision.contacts;
-        if(colliderLayerMask == layer_Enemy)
+        //if(colliderLayerMask == layer_Enemy)
+        if (colliderLayer == LayerHelper.GetLayer("Enemy"))
         {
-            for(int i = 0; i < contacts.Length; i++)
+            for (int i = 0; i < contacts.Length; i++)
             {
                 Vector2 hitNormal = contacts[i].normal;
                 if (hitNormal.x != 0 || hitNormal.y < 0)
@@ -192,6 +195,10 @@ public class Mario : MonoBehaviour
                     break;
                 }
             }
+        }
+        else if(colliderLayer == LayerHelper.GetLayer("GoalFlag"))
+        {
+            Goal();
         }
     }
 
@@ -227,13 +234,29 @@ public class Mario : MonoBehaviour
     private void OnGhost()
     {
         isGhost = true;
-        Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, true);
+        //Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, true);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerHelper.GetLayer("Enemy"), true);
     }
 
     private void OffGhost()
     {
         isGhost = false;
-        Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, false);
+        //Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, false);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerHelper.GetLayer("Enemy"), false);
+    }
+
+    private void Goal()
+    {
+        GameObject goalFlagGameObj = GameObject.FindGameObjectWithTag("GoalFlag");
+        Vector3 goalFlagPosition = goalFlagGameObj.transform.position;
+        Vector3 myPosition = transform.position;
+        if (goalFlagPosition.y < myPosition.y)
+        {
+            myPosition.y = goalFlagPosition.y;
+            transform.position = myPosition;
+        }
+        transform.parent = goalFlagGameObj.transform.parent;
+        GetComponent<GoalActingPlay>().enabled = true;
     }
 
     public void StatusChangeTo(Status newStatus)
@@ -264,6 +287,15 @@ public class Mario : MonoBehaviour
         isInvincible = false;
     }
 
+    private void OnAddScore(IScore score)
+    {
+        OnAddScore(score.score);
+    }
+
+    private void OnAddScore(int score)
+    {
+        Debug.LogFormat("Mario get {0} point", score);
+    }
 
     private void TestInput()
     {

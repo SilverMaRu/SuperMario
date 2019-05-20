@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Treasure : Brock
+public interface IScore
 {
-
+    int score { get;}
 }

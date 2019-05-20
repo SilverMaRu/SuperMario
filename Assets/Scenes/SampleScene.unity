@@ -30851,6 +30851,7 @@ GameObject:
   - component: {fileID: 1759298152}
   - component: {fileID: 1759298151}
   - component: {fileID: 1759298153}
+  - component: {fileID: 1759298154}
   - component: {fileID: 1759298150}
   - component: {fileID: 1759298149}
   - component: {fileID: 1759298148}
@@ -31033,6 +31034,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeUseTime: 1
   twinklingFrequency: 0.1
+--- !u!114 &1759298154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759298146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a48f49d970b2a438cf8ead16a8e200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedDown: 10
+  speedX: 3
 --- !u!1 &1759496548
 GameObject:
   m_ObjectHideFlags: 0
@@ -38377,6 +38392,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6745344567653214353, guid: 48b5395ff85db7f4184a9d16bba57e7b,
+        type: 3}
+      propertyPath: speedDown
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48b5395ff85db7f4184a9d16bba57e7b, type: 3}

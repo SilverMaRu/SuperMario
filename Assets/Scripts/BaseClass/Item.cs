@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IScore
 {
     // 生成过程所用时间
     public float spawUseTime = 1f;
@@ -19,6 +19,9 @@ public class Item : MonoBehaviour
     protected float totalTime = 0f;
     // 标志是否已经调用过Push方法
     protected bool done = false;
+
+    public int score { get { return _score; } }
+    protected int _score = 0;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -58,5 +61,15 @@ public class Item : MonoBehaviour
             rgBody2D.velocity = transform.right * speedX;
             done = true;
         }
+    }
+
+    protected virtual void OnAddScore()
+    {
+        Assets.Scripts.Others.EventManager.OnEvent("AddScore", this);
+    }
+
+    private void OnDestroy()
+    {
+        OnAddScore();
     }
 }

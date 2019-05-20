@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - GoalFlag
+  - GoalFlagpole
   layers:
   - Default
   - TransparentFX
@@ -20,7 +22,7 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - Item
-  - 
+  - GoalFlag
   - 
   - 
   - 

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Others;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour , IScore
 {
     public float speedX = 3f;
     public float delayDestroyTime = 0.5f;
@@ -15,6 +16,9 @@ public class Enemy : MonoBehaviour
     protected int layer_Ground;
     protected int layer_Player;
     protected int layer_PlayerBullet;
+
+    public int score { get { return _score; } }
+    protected int _score = 0;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -73,12 +77,14 @@ public class Enemy : MonoBehaviour
 
     protected virtual void StepedOn()
     {
+        OnAddScore();
         animator.SetTrigger("stepedOn");
         rgBody2D.velocity = Vector2.zero;
     }
 
     protected virtual void OnHit(Vector3 hitPoint)
     {
+        OnAddScore();
         if(hitPoint.x > transform.position.x)
         {
             rgBody2D.velocity = Vector2.left * 5 + Vector2.up * 20;
@@ -99,5 +105,10 @@ public class Enemy : MonoBehaviour
             childrenscoll2D[i].enabled = false;
         }
         Destroy(gameObject, delayDestroyTime);
+    }
+
+    protected virtual void OnAddScore()
+    {
+        EventManager.OnEvent("AddScore", this);
     }
 }

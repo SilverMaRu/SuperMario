@@ -14,6 +14,7 @@ public class Mushroom : Item
 
         layer_Ground = LayerMask.NameToLayer("Ground");
         layer_Player = LayerMask.NameToLayer("Player");
+        _score = 1000;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
