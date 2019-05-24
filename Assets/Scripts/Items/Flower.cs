@@ -21,17 +21,17 @@ public class Flower : Item
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        int collideLayer = collision.gameObject.layer;
-        if(collideLayer == layer_Player)
-        {
-            Destroy(gameObject);
-            Mario mario = collision.GetComponent<Mario>();
-            if(mario != null)
-            {
-                mario.StatusChangeTo(Mario.Status.FireBig);
-            }
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    int collideLayer = collision.gameObject.layer;
+    //    if(collideLayer == layer_Player)
+    //    {
+    //        Destroy(gameObject);
+    //        Mario mario = collision.GetComponent<Mario>();
+    //        if(mario != null)
+    //        {
+    //            mario.StatusChangeTo(Mario.Status.FireBig);
+    //        }
+    //    }
+    //}
 }

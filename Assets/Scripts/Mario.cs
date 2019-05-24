@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Assets.Scripts.Others;
+
 public class Mario : MonoBehaviour
 {
     public enum Status
@@ -34,7 +36,7 @@ public class Mario : MonoBehaviour
     private Rigidbody2D rgBody2D;
     private Collider2D coll2D;
     private Animator animator;
-    private MarioStatusChange statusChange;
+    //private MarioStatusChange statusChange;
 
     private float deltaSpeedX = 0;
     private float stopTimeXMaxSpeed = 0;
@@ -52,8 +54,17 @@ public class Mario : MonoBehaviour
     private bool isGhost = false;
     private float lastShootTime = 0;
 
+    private Type[] actionTypes = { typeof(InputMove), typeof(InputJump), typeof(GetItem), typeof(InputShoot) };
+    private Type starType = typeof(Star);
+    
+
     //private int layer_Enemy;
     private GameObject bulletFirePrefab;
+
+    private void Awake()
+    {
+        ActionManager.AddActioins(this, actionTypes);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +72,7 @@ public class Mario : MonoBehaviour
         rgBody2D = GetComponent<Rigidbody2D>();
         coll2D = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-        statusChange = GetComponent<MarioStatusChange>();
+        //statusChange = GetComponent<MarioStatusChange>();
 
         deltaSpeedX = maxSpeedX - startSpeedX;
         stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
@@ -70,6 +81,7 @@ public class Mario : MonoBehaviour
         bulletFirePrefab = Resources.Load<GameObject>("Prefabs/Fire");
 
         EventManager.BindingEvent<IScore>("AddScore", OnAddScore);
+        EventManager.BindingEvent<Type>("GetItem", OnGetItem);
     }
 
     // Update is called once per frame
@@ -79,24 +91,22 @@ public class Mario : MonoBehaviour
         {
             return;
         }
-        // 通过垂直方向速度判断是否在地面
-        onGround = rgBody2D.velocity.y == 0;
-        velocity = rgBody2D.velocity;
-        float h = Input.GetAxis("Horizontal");
-        Move(h);
-        Jump();
-        Shoot();
+        //// 通过垂直方向速度判断是否在地面
+        //onGround = rgBody2D.velocity.y == 0;
+        //velocity = rgBody2D.velocity;
+        //float h = Input.GetAxis("Horizontal");
+        //Move(h);
+        //Jump();
+        //Shoot();
 
-        // 再次判断是否在地面
-        onGround = rgBody2D.velocity.y == 0;
-        animator.SetFloat("speed_x", rgBody2D.velocity.x);
-        animator.SetFloat("force_x", h);
-        animator.SetBool("inGround", onGround);
+        //// 再次判断是否在地面
+        //onGround = rgBody2D.velocity.y == 0;
+        //animator.SetFloat("speed_x", rgBody2D.velocity.x);
+        //animator.SetFloat("force_x", h);
+        //animator.SetBool("inGround", onGround);
         animator.SetBool("isGhost", isGhost);
 
         TestInput();
-
-
     }
 
     private void Move(float h)
@@ -213,7 +223,6 @@ public class Mario : MonoBehaviour
         {
             OnGhost();
             StatusChangeTo(Status.NormalSmall);
-            Invoke("OffGhost", ghostTime);
         }
     }
 
@@ -221,8 +230,9 @@ public class Mario : MonoBehaviour
     {
         isAlive = false;
         rgBody2D.velocity = Vector2.zero;
-        animator.SetBool("isAlive", isAlive);
+        //animator.SetBool("isAlive", isAlive);
         Invoke("OnDieJump", 1f);
+        EventManager.OnEvent("Die");
     }
 
     private void OnDieJump()
@@ -234,15 +244,17 @@ public class Mario : MonoBehaviour
     private void OnGhost()
     {
         isGhost = true;
-        //Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, true);
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerHelper.GetLayer("Enemy"), true);
+        Invoke("OffGhost", ghostTime);
+
+        EventManager.OnEvent("OnGhost");
     }
 
     private void OffGhost()
     {
         isGhost = false;
-        //Physics2D.IgnoreLayerCollision(gameObject.layer, layer_Enemy, false);
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerHelper.GetLayer("Enemy"), false);
+        EventManager.OnEvent("OffGhost");
     }
 
     private void Goal()
@@ -261,7 +273,8 @@ public class Mario : MonoBehaviour
 
     public void StatusChangeTo(Status newStatus)
     {
-        statusChange.DoChange(newStatus);
+        //statusChange.DoChange(newStatus);
+        EventManager.OnEvent("ChangeStatus", newStatus);
         switch (newStatus)
         {
             case Status.NormalSmall:
@@ -275,6 +288,14 @@ public class Mario : MonoBehaviour
                 break;
         }
         status = newStatus;
+    }
+
+    private void OnGetItem(Type itemType)
+    {
+        if(itemType == starType)
+        {
+            OnInvincible();
+        }
     }
 
     public void OnInvincible()

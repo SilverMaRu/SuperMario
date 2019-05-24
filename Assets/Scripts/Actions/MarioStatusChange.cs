@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Others;
 
 public class MarioStatusChange : MonoBehaviour
 {
@@ -18,18 +19,19 @@ public class MarioStatusChange : MonoBehaviour
     private Sprite[] twinklingSprites = new Sprite[2];
     private int currentSpriteIdx = 0;
     private float lastTwinkling = 0;
+    private bool isFireMario = false;
 
     private SpriteRenderer sr;
     private Animator animator;
     private Collider2D coll;
 
+    private Type mushroomType = typeof(Mushroom);
+    private Type flowerType = typeof(Flower);
+
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        coll = GetComponent<Collider2D>();
-        animator = GetComponent<Animator>();
-        loadedSprites = Resources.LoadAll<Sprite>("Sprites/Mario &  Luigi");
+        Init();
     }
 
     // Update is called once per frame
@@ -43,21 +45,34 @@ public class MarioStatusChange : MonoBehaviour
 
     private void StatusChange()
     {
-        if(Time.unscaledTime - lastTwinkling >= twinklingFrequency)
+        if (Time.unscaledTime - lastTwinkling >= twinklingFrequency)
         {
             currentSpriteIdx = (currentSpriteIdx + 1) % twinklingSprites.Length;
             sr.sprite = twinklingSprites[currentSpriteIdx];
             lastTwinkling = Time.unscaledTime;
         }
 
-        if(Time.unscaledTime - changeStartTime >= changeUseTime)
+        if (Time.unscaledTime - changeStartTime >= changeUseTime)
         {
             CompleteChange();
         }
     }
 
-    public void DoChange(Mario.Status targetStatus)
+    private void OnGetItem(Type itemType)
     {
+        if (itemType == mushroomType)
+        {
+            DoChange(Mario.Status.NormalBig);
+        }
+        else if (itemType == flowerType)
+        {
+            DoChange(Mario.Status.FireBig);
+        }
+    }
+
+    private void DoChange(Mario.Status targetStatus)
+    {
+        isFireMario = targetStatus == Mario.Status.FireBig;
         animator.enabled = false;
         changeStartTime = Time.unscaledTime;
         timeScaleMark = Time.timeScale;
@@ -89,9 +104,6 @@ public class MarioStatusChange : MonoBehaviour
             case Mario.Status.NormalBig:
                 resultSpriteName = "NormalMario_B" + strIndex;
                 break;
-            //case Mario.Status.FireSmall:
-            //    resultSpriteName = "FireMario" + strIndex;
-                //break;
             case Mario.Status.FireBig:
                 resultSpriteName = "FireMario_B" + strIndex;
                 break;
@@ -108,7 +120,7 @@ public class MarioStatusChange : MonoBehaviour
         if (resultSprite == null)
         {
             resultSprite = Resources.Load<Sprite>(string.Format("Sprites/{0}", resultSpriteName));
-            Assets.Scripts.Others.Tool.Append(resultSprite, loadedSprites, true);
+            Tool.Append(resultSprite, loadedSprites, true);
         }
         return resultSprite;
     }
@@ -121,6 +133,7 @@ public class MarioStatusChange : MonoBehaviour
         animator.enabled = true;
         changing = false;
         Time.timeScale = timeScaleMark;
+        EventManager.OnEvent("StatusChanged", isFireMario);
     }
 
     private void ResetCollider2D()
@@ -128,11 +141,37 @@ public class MarioStatusChange : MonoBehaviour
         Vector3 spriteSize = sr.sprite.bounds.size;
         // 匹配"_B"(大Mario标志)
         // 不是大Mario
-        if(sr.sprite.name.IndexOf("_B") <=0)
+        if (sr.sprite.name.IndexOf("_B") <= 0)
         {
             spriteSize = Vector3.right * spriteSize.x * 0.75f + Vector3.up * spriteSize.y;
         }
         ((BoxCollider2D)coll).size = spriteSize;
         coll.offset = Vector2.right * coll.offset.x + Vector2.up * spriteSize.y * 0.5f;
+    }
+
+    public void Init<T>(T owner) where T : MonoBehaviour
+    {
+        System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields(System.Reflection.BindingFlags.Public);
+        System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties(System.Reflection.BindingFlags.Public);
+        foreach (System.Reflection.FieldInfo field in publicFields)
+        {
+            foreach (System.Reflection.PropertyInfo property in publicPropertys)
+            {
+                if (field.Name == property.Name)
+                {
+                    property.SetValue(this, field.GetValue(owner));
+                }
+            }
+        }
+    }
+
+    private void Init()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        coll = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+        loadedSprites = Resources.LoadAll<Sprite>("Sprites/Mario &  Luigi");
+
+        EventManager.BindingEvent<Type>("GetItem", OnGetItem);
     }
 }

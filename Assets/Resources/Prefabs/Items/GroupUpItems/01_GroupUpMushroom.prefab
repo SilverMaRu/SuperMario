@@ -71,8 +71,8 @@ GameObject:
   - component: {fileID: 7252652247483474894}
   - component: {fileID: 7252652247483474895}
   m_Layer: 13
-  m_Name: GroupUpMushroom
-  m_TagString: Untagged
+  m_Name: 01_GroupUpMushroom
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
