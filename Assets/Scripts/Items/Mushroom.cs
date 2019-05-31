@@ -34,20 +34,6 @@ public class Mushroom : Item
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        int colliderLayerMask = collision.gameObject.layer;
-        if (colliderLayerMask == layer_Player)
-        {
-            Mario mario = collision.gameObject.GetComponent<Mario>();
-            if (mario != null)
-            {
-                Destroy(gameObject);
-                mario.StatusChangeTo(Mario.Status.NormalBig);
-            }
-        }
-    }
-
     private void TurnBreak()
     {
         transform.right = -transform.right;

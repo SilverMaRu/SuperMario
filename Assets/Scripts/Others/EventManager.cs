@@ -21,22 +21,17 @@ namespace Assets.Scripts.Others
         {
             Delegate existingDelegate;
             bool hasValue = delegateDic.TryGetValue(eventName, out existingDelegate);
-            //if (hasValue && existingDelegate!=null)
             if (hasValue)
             {
-                Delegate.Combine(existingDelegate, newAction);
+                delegateDic[eventName] = Delegate.Combine(existingDelegate, newAction);
             }
-            //else if (hasValue)
-            //{
-
-            //}
             else
             {
                 delegateDic.Add(eventName, newAction);
             }
         }
 
-        public static void BindingEvent(string eventName, Action newAction)
+        public static void BindingEvent(string eventName, System.Action newAction)
         {
             AddDelegate(eventName, newAction);
         }

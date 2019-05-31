@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7252652246674825055}
   m_Layer: 0
   m_Name: EatCollider
-  m_TagString: Untagged
+  m_TagString: ItemTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

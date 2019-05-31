@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Others;
 
-public class MarioStatusChange : MonoBehaviour
+public class MarioStatusChange : Action
 {
     // 切换状态用时间
     public float changeUseTime = 2f;
     // 切换状态时闪烁频率
     public float twinklingFrequency = 0.1f;
+    public RuntimeAnimatorController[] controllers;
 
     private float timeScaleMark = 0;
     private bool changing = false;
@@ -19,7 +20,7 @@ public class MarioStatusChange : MonoBehaviour
     private Sprite[] twinklingSprites = new Sprite[2];
     private int currentSpriteIdx = 0;
     private float lastTwinkling = 0;
-    private bool isFireMario = false;
+    //private bool isFireMario = false;
 
     private SpriteRenderer sr;
     private Animator animator;
@@ -27,15 +28,22 @@ public class MarioStatusChange : MonoBehaviour
 
     private Type mushroomType = typeof(Mushroom);
     private Type flowerType = typeof(Flower);
+    private Mario.Status targetStatus = Mario.Status.NormalSmall;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        Init();
+        sr = GetComponent<SpriteRenderer>();
+        coll = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+        loadedSprites = Resources.LoadAll<Sprite>("Sprites/Mario &  Luigi");
+
+        EventManager.BindingEvent<Type>("GetItem", OnGetItem);
+        EventManager.BindingEvent("CollideWithEnemy", OnCollideWithEnemy);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (changing)
         {
@@ -70,13 +78,21 @@ public class MarioStatusChange : MonoBehaviour
         }
     }
 
+    private void OnCollideWithEnemy()
+    {
+        DoChange(Mario.Status.NormalSmall);
+    }
+
     private void DoChange(Mario.Status targetStatus)
     {
-        isFireMario = targetStatus == Mario.Status.FireBig;
-        animator.enabled = false;
+        this.targetStatus = targetStatus;
+        // 停止运行时间
         changeStartTime = Time.unscaledTime;
         timeScaleMark = Time.timeScale;
         Time.timeScale = 0;
+        
+        //isFireMario = targetStatus == Mario.Status.FireBig;
+        animator.enabled = false;
         twinklingSprites[0] = sr.sprite;
         twinklingSprites[1] = ResultNewSprite(sr.sprite.name, targetStatus);
         changing = true;
@@ -133,7 +149,9 @@ public class MarioStatusChange : MonoBehaviour
         animator.enabled = true;
         changing = false;
         Time.timeScale = timeScaleMark;
-        EventManager.OnEvent("StatusChanged", isFireMario);
+
+        EventManager.OnEvent("StatusChanged", targetStatus);
+        EventManager.OnEvent("CanShootChanged", targetStatus == Mario.Status.FireBig);
     }
 
     private void ResetCollider2D()
@@ -147,31 +165,5 @@ public class MarioStatusChange : MonoBehaviour
         }
         ((BoxCollider2D)coll).size = spriteSize;
         coll.offset = Vector2.right * coll.offset.x + Vector2.up * spriteSize.y * 0.5f;
-    }
-
-    public void Init<T>(T owner) where T : MonoBehaviour
-    {
-        System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields(System.Reflection.BindingFlags.Public);
-        System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties(System.Reflection.BindingFlags.Public);
-        foreach (System.Reflection.FieldInfo field in publicFields)
-        {
-            foreach (System.Reflection.PropertyInfo property in publicPropertys)
-            {
-                if (field.Name == property.Name)
-                {
-                    property.SetValue(this, field.GetValue(owner));
-                }
-            }
-        }
-    }
-
-    private void Init()
-    {
-        sr = GetComponent<SpriteRenderer>();
-        coll = GetComponent<Collider2D>();
-        animator = GetComponent<Animator>();
-        loadedSprites = Resources.LoadAll<Sprite>("Sprites/Mario &  Luigi");
-
-        EventManager.BindingEvent<Type>("GetItem", OnGetItem);
     }
 }

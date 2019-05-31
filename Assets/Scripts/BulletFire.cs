@@ -14,6 +14,7 @@ public class BulletFire : MonoBehaviour
 
     private int layer_Ground;
     private int layer_Enemy;
+    private int layer_Goal;
     private Quaternion angle;
     private float gravityScaleMark = 0;
     private GameObject explosion;
@@ -29,6 +30,7 @@ public class BulletFire : MonoBehaviour
 
         layer_Ground = LayerMask.NameToLayer("Ground");
         layer_Enemy = LayerMask.NameToLayer("Enemy");
+        layer_Goal = LayerMask.NameToLayer("GoalFlag");
         explosion = Resources.Load<GameObject>("Prefabs/Explosion");
         angle = Quaternion.Euler(Vector3.up * transform.rotation.eulerAngles.y + springAngle);
     }
@@ -58,12 +60,12 @@ public class BulletFire : MonoBehaviour
                 }
                 if (contacts[i].normal.x != 0)
                 {
-                    HitGround();
+                    DestroyFire();
                     break;
                 }
             }
         }
-        else if(collideLayer == layer_Enemy)
+        else if(collideLayer == layer_Enemy || collideLayer == layer_Goal)
         {
             DestroyFire();
         }
@@ -76,11 +78,6 @@ public class BulletFire : MonoBehaviour
         rgBody2D.velocity = transform.right * springSpeed;
     }
 
-    private void HitGround()
-    {
-        DestroyFire();
-    }
-
     public void DestroyFire()
     {
         if (explosion != null)
@@ -88,6 +85,7 @@ public class BulletFire : MonoBehaviour
             Instantiate(explosion, transform.position, Quaternion.identity);
         }
         Destroy(gameObject);
-        Mario.bulletNum = Mathf.Max(Mario.bulletNum - 1, 0);
+        EventManager.OnEvent("BulletDistroy");
+        //Mario.bulletNum = Mathf.Max(Mario.bulletNum - 1, 0);
     }
 }

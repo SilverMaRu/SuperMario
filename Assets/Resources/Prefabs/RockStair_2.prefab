@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 673320848322000284}
   - component: {fileID: 2921701367048136437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (44)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1000689890044496101}
   - component: {fileID: 3848085026106228768}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1785873367369270198}
   - component: {fileID: 4867274088382684838}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (41)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3598408063222682599}
   - component: {fileID: 6072250823955328196}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (42)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941989952577758195}
   - component: {fileID: 2475226976643801729}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (35)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2043185006881027429}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8258808820898100416}
   - component: {fileID: 3629584101221416310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (37)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 549429528310451936}
   - component: {fileID: 6189501486890312429}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7337780343132323694}
   - component: {fileID: 4282979537280382257}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -716,7 +716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 72806011661721880}
   - component: {fileID: 3068608043793065097}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4424832285140124885}
   - component: {fileID: 1592726336414372946}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -874,7 +874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1206016234734983439}
   - component: {fileID: 3453048227735874983}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,7 +953,7 @@ GameObject:
   m_Component:
   - component: {fileID: 374330915564222184}
   - component: {fileID: 6939486734713725173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1032,7 +1032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3329963293912363831}
   - component: {fileID: 6049813340705043116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1111,7 +1111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5415219546502667625}
   - component: {fileID: 4806373552388828102}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (32)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1190,7 +1190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2535087084626558380}
   - component: {fileID: 4394572032017101807}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1264,7 +1264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5230397511279313352}
   - component: {fileID: 975410558254436502}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1343,7 +1343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2621254085036340770}
   - component: {fileID: 5144815045595952490}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (33)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,7 +1422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2243864834551580166}
   - component: {fileID: 1157316883664478108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (34)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1501,7 +1501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4720621068266610005}
   - component: {fileID: 8482017582250800390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1579,7 +1579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7406448399713088634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RockStair_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1612,7 +1612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5533135695904198124}
   - component: {fileID: 7490360303702482256}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (39)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1691,7 +1691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3012435546225563995}
   - component: {fileID: 6452899924786526254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1770,7 +1770,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6255448612774845110}
   - component: {fileID: 2879522974680996017}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1849,7 +1849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8204733342837454839}
   - component: {fileID: 6120084060734886203}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (40)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1928,7 +1928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4900317547314388665}
   - component: {fileID: 545152729662996784}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2007,7 +2007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2266964737078877013}
   - component: {fileID: 2694924858832125851}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2086,7 +2086,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2652082950349290802}
   - component: {fileID: 515542300328164754}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2165,7 +2165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1339533032390331434}
   - component: {fileID: 7026342406501015804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2244,7 +2244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6598084610481355196}
   - component: {fileID: 4640254682685988578}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2323,7 +2323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7195458651080071869}
   - component: {fileID: 473691545255964848}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2402,7 +2402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3122552576812266003}
   - component: {fileID: 8477421934736643946}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2481,7 +2481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7229419514848001341}
   - component: {fileID: 7636495588586647660}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2560,7 +2560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8107695660038928971}
   - component: {fileID: 8454679342687149405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2639,7 +2639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5067630241779034062}
   - component: {fileID: 2579734068666529298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2718,7 +2718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4764195108328376717}
   - component: {fileID: 6369322713461947247}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (38)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2797,7 +2797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 801557673156205810}
   - component: {fileID: 273144150045996785}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2876,7 +2876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3933827284797070112}
   - component: {fileID: 1686489657432317064}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2955,7 +2955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7426705111187784953}
   - component: {fileID: 647046716338189745}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3034,7 +3034,7 @@ GameObject:
   m_Component:
   - component: {fileID: 440035849448609555}
   - component: {fileID: 4305532436321349389}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3113,7 +3113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6853355784559906242}
   - component: {fileID: 6256744210698612205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3192,7 +3192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1665044583771894828}
   - component: {fileID: 1957268809226142217}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3271,7 +3271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7330380632822850331}
   - component: {fileID: 5910816413194493061}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3350,7 +3350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8937781614919642756}
   - component: {fileID: 517595386017247741}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3429,7 +3429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3150221975118038924}
   - component: {fileID: 6218095398592701856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (43)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3508,7 +3508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7333348981180133863}
   - component: {fileID: 6044403019587346841}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3587,7 +3587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9001612219544637417}
   - component: {fileID: 351529877012897470}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_Obstacle (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

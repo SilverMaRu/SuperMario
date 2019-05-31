@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputJump : MonoBehaviour
+public class InputJump : Action
 {
     //public MonoBehaviour owner;
 
-    public KeyCode jumpKey { get; set; }
-    public float jumpForce { get; set; }
+    public KeyCode jumpKey;
+    public float jumpForce;
 
     private bool onGround = false;
     private bool hadJumpKeyDown = false;
@@ -18,13 +18,16 @@ public class InputJump : MonoBehaviour
     private Animator animator;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        Init();
+        rgBody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
+        Assets.Scripts.Others.EventManager.BindingEvent("OnDie", Die);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (Time.timeScale == 0 || !isAlive)
         {
@@ -59,34 +62,5 @@ public class InputJump : MonoBehaviour
     private void Die()
     {
         isAlive = false;
-    }
-
-    //public void Init(KeyCode jumpKey, float jumpForce)
-    public void Init<T>(T owner) where T : MonoBehaviour
-    {
-        //System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields(System.Reflection.BindingFlags.Public);
-        //System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties(System.Reflection.BindingFlags.Public);
-        System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields();
-        System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties();
-        foreach (System.Reflection.FieldInfo field in publicFields)
-        {
-            foreach (System.Reflection.PropertyInfo property in publicPropertys)
-            {
-                if (field.Name == property.Name)
-                {
-                    property.SetValue(this, field.GetValue(owner));
-                }
-            }
-        }
-
-        Init();
-    }
-
-    private void Init()
-    {
-        rgBody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-
-        Assets.Scripts.Others.EventManager.BindingEvent("OnDie", Die);
     }
 }

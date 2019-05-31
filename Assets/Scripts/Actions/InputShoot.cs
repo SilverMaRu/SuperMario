@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Others;
 
-public class InputShoot : MonoBehaviour
+public class InputShoot : Action
 {
-    public KeyCode shootKey { get; set; }
-    public int maxBulletAliveNum { get; set; }
-    public float shootFrequency { get; set; }
-    public GameObject bulletFirePrefab { get; set; }
-    public Transform shootPointTrans { get; set; }
+    public KeyCode shootKey;
+    public int maxBulletAliveNum;
+    public float shootFrequency;
+    public GameObject bulletFirePrefab;
+    public Transform shootPointTrans;
 
-    private int bulletNum = 0;
+    private int currentBulletAliveNum = 0;
     private float lastShootTime = 0;
     private bool canShoot = false;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        Init();
+        bulletFirePrefab = Resources.Load<GameObject>("Prefabs/Fire");
+
+        EventManager.BindingEvent<bool>("CanShootChanged", OnCanShootChanged);
+        EventManager.BindingEvent("BulletDistroy", OnBulletDistroy);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         Shoot();
     }
@@ -30,57 +33,27 @@ public class InputShoot : MonoBehaviour
 
     private void Shoot()
     {
-        if (canShoot)
-        {
-            return;
-        }
-        if (Input.GetKeyDown(shootKey) && bulletNum < maxBulletAliveNum && Time.time - lastShootTime > shootFrequency)
+        if (canShoot && Input.GetKeyDown(shootKey) && currentBulletAliveNum < maxBulletAliveNum && Time.time - lastShootTime > shootFrequency)
         {
             //animator.SetTrigger("shoot");
-            EventManager.OnEvent("OnShoot");
+            Debug.Log("Do Shoot");
             if (bulletFirePrefab != null && shootPointTrans != null)
             {
                 Instantiate(bulletFirePrefab, shootPointTrans.position, shootPointTrans.rotation);
-                bulletNum++;
+                currentBulletAliveNum++;
+                EventManager.OnEvent("Shoot");
             }
             lastShootTime = Time.time;
         }
     }
 
-    private void OnStatusChanged(bool canShoot)
+    private void OnCanShootChanged(bool canShoot)
     {
         this.canShoot = canShoot;
     }
 
     private void OnBulletDistroy()
     {
-        bulletNum--;
-    }
-
-    //public void Init(KeyCode shootKey, int maxBulletAliveNum, float shootFrequency, GameObject bulletFirePrefab, Transform shootPointTrans)
-    public void Init<T>(T owner) where T : MonoBehaviour
-    {
-        //System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields(System.Reflection.BindingFlags.Public);
-        //System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties(System.Reflection.BindingFlags.Public);
-        System.Reflection.FieldInfo[] publicFields = typeof(T).GetFields();
-        System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties();
-        foreach (System.Reflection.FieldInfo field in publicFields)
-        {
-            foreach (System.Reflection.PropertyInfo property in publicPropertys)
-            {
-                if (field.Name == property.Name)
-                {
-                    property.SetValue(this, field.GetValue(owner));
-                }
-            }
-        }
-
-        Init();
-    }
-
-    private void Init()
-    {
-        EventManager.BindingEvent<bool>("StatusChanged", OnStatusChanged);
-        EventManager.BindingEvent("BulletDistroy", OnBulletDistroy);
+        currentBulletAliveNum--;
     }
 }

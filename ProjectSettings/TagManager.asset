@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - GoalFlag
   - GoalFlagpole
+  - Item
+  - ItemTrigger
   layers:
   - Default
   - TransparentFX

@@ -25,6 +25,10 @@ public class Mario : MonoBehaviour
     public float stopUseTime = 1f;
     public float jumpForce = 30;
 
+    // 切换状态用时间
+    public float changeUseTime = 1f;
+    // 切换状态时闪烁频率
+    public float twinklingFrequency = 0.1f;
     public RuntimeAnimatorController[] controllers;
 
     public float ghostTime = 2f;
@@ -54,7 +58,7 @@ public class Mario : MonoBehaviour
     private bool isGhost = false;
     private float lastShootTime = 0;
 
-    private Type[] actionTypes = { typeof(InputMove), typeof(InputJump), typeof(GetItem), typeof(InputShoot) };
+    private Type[] actionTypes = { typeof(InputMove), typeof(InputJump), typeof(GetItem), typeof(InputShoot), typeof(MarioStatusChange) };
     private Type starType = typeof(Star);
     
 
@@ -63,7 +67,7 @@ public class Mario : MonoBehaviour
 
     private void Awake()
     {
-        ActionManager.AddActioins(this, actionTypes);
+        ActionManager.AddActions(this, actionTypes);
     }
 
     // Start is called before the first frame update
@@ -82,6 +86,7 @@ public class Mario : MonoBehaviour
 
         EventManager.BindingEvent<IScore>("AddScore", OnAddScore);
         EventManager.BindingEvent<Type>("GetItem", OnGetItem);
+        EventManager.BindingEvent<Status>("StatusChanged", OnStatusChanged);
     }
 
     // Update is called once per frame
@@ -222,7 +227,7 @@ public class Mario : MonoBehaviour
         else
         {
             OnGhost();
-            StatusChangeTo(Status.NormalSmall);
+            EventManager.OnEvent("CollideWithEnemy");
         }
     }
 
@@ -290,8 +295,26 @@ public class Mario : MonoBehaviour
         status = newStatus;
     }
 
+    private void OnStatusChanged(Status newStatus)
+    {
+        switch (newStatus)
+        {
+            case Status.NormalSmall:
+                animator.runtimeAnimatorController = controllers[0];
+                break;
+            case Status.NormalBig:
+                animator.runtimeAnimatorController = controllers[1];
+                break;
+            case Status.FireBig:
+                animator.runtimeAnimatorController = controllers[2];
+                break;
+        }
+        status = newStatus;
+    }
+
     private void OnGetItem(Type itemType)
     {
+        Debug.Log("Mario.OnGetItem");
         if(itemType == starType)
         {
             OnInvincible();
@@ -322,15 +345,15 @@ public class Mario : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StatusChangeTo(Status.NormalSmall);
+            EventManager.OnEvent("CollideWithEnemy");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            StatusChangeTo(Status.NormalBig);
+            EventManager.OnEvent("GetItem", typeof(Mushroom));
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            StatusChangeTo(Status.FireBig);
+            EventManager.OnEvent("GetItem", typeof(Flower));
         }
     }
 }

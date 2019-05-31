@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputMove : MonoBehaviour
+public class InputMove : Action
 {
-    //public MonoBehaviour owner;
-
-    //public float startSpeedX { get { return startSpeedX; } set { startSpeedX = value; deltaSpeedX = maxSpeedX - startSpeedX; } }
-    //public float maxSpeedX { get { return maxSpeedX; } set { maxSpeedX = value; deltaSpeedX = maxSpeedX - startSpeedX; stopTimeXMaxSpeed = stopUseTime * maxSpeedX; } }
-    //public float maxSpeedUseTime { get; set; }
-    //public float stopUseTime { get { return stopUseTime; } set { stopUseTime = value; stopTimeXMaxSpeed = stopUseTime * maxSpeedX; } }
-    public float startSpeedX { get; set; }
-    public float maxSpeedX { get; set; }
-    public float maxSpeedUseTime { get; set; }
-    public float stopUseTime { get; set; }
+    public float startSpeedX;
+    public float maxSpeedX;
+    public float maxSpeedUseTime;
+    public float stopUseTime;
 
     private float deltaSpeedX = 0;
     private float stopTimeXMaxSpeed = 0;
@@ -26,13 +20,19 @@ public class InputMove : MonoBehaviour
     private Animator animator;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        Init();
+        rgBody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
+        deltaSpeedX = maxSpeedX - startSpeedX;
+        stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
+
+        Assets.Scripts.Others.EventManager.BindingEvent("OnDie", Die);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (Time.timeScale == 0 || !isAlive)
         {
@@ -100,37 +100,4 @@ public class InputMove : MonoBehaviour
     {
         isAlive = false;
     }
-
-    //public void Init(float startSpeedX, float maxSpeedX, float maxSpeedUseTime, float stopUseTime)
-    public void Init<T>(T owner) where T: MonoBehaviour
-    {
-        //System.Reflection.FieldInfo[] publicFields = owner.GetType().GetFields(System.Reflection.BindingFlags.Public);
-        //System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties(System.Reflection.BindingFlags.Public);
-        System.Reflection.FieldInfo[] publicFields = owner.GetType().GetFields();
-        System.Reflection.PropertyInfo[] publicPropertys = GetType().GetProperties();
-        foreach (System.Reflection.FieldInfo field in publicFields)
-        {
-            foreach(System.Reflection.PropertyInfo property in publicPropertys)
-            {
-                if(field.Name == property.Name)
-                {
-                    property.SetValue(this, field.GetValue(owner));
-                }
-            }
-        }
-
-        Init();
-    }
-
-    private void Init()
-    {
-        rgBody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-
-        deltaSpeedX = maxSpeedX - startSpeedX;
-        stopTimeXMaxSpeed = stopUseTime * maxSpeedX;
-
-        Assets.Scripts.Others.EventManager.BindingEvent("OnDie", Die);
-    }
-
 }

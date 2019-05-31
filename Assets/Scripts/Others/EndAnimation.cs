@@ -10,7 +10,7 @@ namespace Assets.Scripts.Others
         public int layerIndex = 0;
         public string clipName = "";
 
-        private Action EndAction;
+        private System.Action EndAction;
         private Animator animator;
 
         private bool done = false;
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Others
             }
         }
 
-        public void SetEndAction(Action endAction)
+        public void SetEndAction(System.Action endAction)
         {
             EndAction = endAction;
         }
